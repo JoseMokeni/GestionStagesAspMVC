@@ -12,9 +12,24 @@ namespace GestionStages.Controllers
         {
             _context = context;
         }
+
+        private bool isAdmin()
+        {
+            if (HttpContext.Session.GetString("Role") != "Admin")
+            {
+                return false;
+            }
+            return true;
+        }
         // GET: CompaniesController
         public ActionResult Index()
         {
+            // if not admin, redirect to home
+            if (!isAdmin())
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
             // get all companies
             List<Company> companies = _context.Companies.ToList();
             return View(companies);
@@ -23,6 +38,11 @@ namespace GestionStages.Controllers
         // GET: CompaniesController/Details/5
         public ActionResult Details(int id)
         {
+            // if not admin, redirect to home
+            if (!isAdmin())
+            {
+                return RedirectToAction("Index", "Home");
+            }
             // get company by id
             Company? company = _context.Companies.SingleOrDefault(c => c.Id == id);
             if (company == null)
@@ -36,6 +56,11 @@ namespace GestionStages.Controllers
         // GET: CompaniesController/Create
         public ActionResult Create()
         {
+            // if not admin, redirect to home
+            if (!isAdmin())
+            {
+                return RedirectToAction("Index", "Home");
+            }
             Company company = new Company();
             return View(company);
 
@@ -64,6 +89,11 @@ namespace GestionStages.Controllers
         // GET: CompaniesController/Edit/5
         public ActionResult Edit(int id)
         {
+            // if not admin, redirect to home
+            if (!isAdmin())
+            {
+                return RedirectToAction("Index", "Home");
+            }
             // get company by id
             Company? company = _context.Companies.SingleOrDefault(c => c.Id == id);
             if (company == null)
@@ -99,6 +129,11 @@ namespace GestionStages.Controllers
         // GET: CompaniesController/Delete/5
         public ActionResult Delete(int id)
         {
+            // if not admin, redirect to home
+            if (!isAdmin())
+            {
+                return RedirectToAction("Index", "Home");
+            }
             // get company by id
             Company? company = _context.Companies.SingleOrDefault(c => c.Id == id);
             if (company == null)

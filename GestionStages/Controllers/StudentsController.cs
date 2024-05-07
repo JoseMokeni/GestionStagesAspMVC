@@ -13,9 +13,34 @@ namespace GestionStages.Controllers
         {
             _context = context;
         }
+
+        private bool isAdmin()
+        {
+            if (HttpContext.Session.GetString("Role") != "Admin")
+            {
+                return false;
+            }
+            return true;
+        }
+
+        private bool isStudent(int id)
+        {
+            // check if the student is the same as the one in the session
+            if (HttpContext.Session.GetString("Role") == "Student" && HttpContext.Session.GetString("Id") != id.ToString())
+            {
+                return false;
+            }
+            return true;
+        }
+
         // GET: StudentsController
         public ActionResult Index()
         {
+            // if not admin, redirect to home
+            if (!isAdmin())
+            {
+                return RedirectToAction("Index", "Home");
+            }
             // get all students
             var students = _context.Students.Include(s => s.Group).ToList();
             return View(students);
@@ -24,6 +49,11 @@ namespace GestionStages.Controllers
         // GET: StudentsController/Details/5
         public ActionResult Details(int id)
         {
+            // if not admin and not the student, redirect to home
+            if (!isAdmin() && !isStudent(id))
+            {
+                return RedirectToAction("Index", "Home");
+            }
             // get student by id
             var student = _context.Students.Include(s => s.Group).FirstOrDefault(s => s.Id == id);
 
@@ -33,6 +63,11 @@ namespace GestionStages.Controllers
         // GET: StudentsController/Create
         public ActionResult Create()
         {
+            // if not admin, redirect to home
+            if (!isAdmin())
+            {
+                return RedirectToAction("Index", "Home");
+            }
             Student student = new Student();
             ViewBag.Groups = _context.Groups.OrderBy(g => g.Name).ToList();
             return View(student);
@@ -85,9 +120,15 @@ namespace GestionStages.Controllers
         // GET: StudentsController/Edit/5
         public ActionResult Edit(int id)
         {
+            // if not admin and not the student, redirect to home
+            if (!isAdmin() && !isStudent(id))
+            {
+                return RedirectToAction("Index", "Home");
+            }
             // get student by id
             var student = _context.Students.Include(s => s.Group).FirstOrDefault(s => s.Id == id);
             ViewBag.Groups = _context.Groups.OrderBy(g => g.Name).ToList();
+            ViewBag.Role = HttpContext.Session.GetString("Role");
             return View(student);
         }
 
@@ -136,6 +177,11 @@ namespace GestionStages.Controllers
         // GET: StudentsController/Delete/5
         public ActionResult Delete(int id)
         {
+            // if not admin, redirect to home
+            if (!isAdmin())
+            {
+                return RedirectToAction("Index", "Home");
+            }
             // get student by id
             var student = _context.Students.Include(s => s.Group).FirstOrDefault(s => s.Id == id);
             return View(student);
