@@ -21,10 +21,10 @@ namespace GestionStages.Models
         [Column(TypeName = "nvarchar(60)")]
         public string Email { get; set; } = string.Empty;
 
-        [Required]
+        /*Nullable field*/
         [Display(Name = "CV")]
         [Column(TypeName = "nvarchar(255)")]
-        public string CV { get; set; } = string.Empty;
+        public string? CV { get; set; }
 
         [Required]
         public int GroupId { get; set; }
