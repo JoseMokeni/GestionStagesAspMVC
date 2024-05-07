@@ -13,9 +13,23 @@ namespace GestionStages.Controllers
             _context = context;
         }
 
+        private bool isAdmin()
+        {
+            if (HttpContext.Session.GetString("Role") != "Admin")
+            {
+                return false;
+            }
+            return true;
+        }
+
         // GET: GroupsController
         public ActionResult Index()
         {
+            // if not admin, redirect to home
+            if (!isAdmin())
+            {
+                return RedirectToAction("Index", "Home");
+            }
             // get all groups
             var groups = _context.Groups.ToList();
             return View(groups);
@@ -24,6 +38,11 @@ namespace GestionStages.Controllers
         // GET: GroupsController/Details/5
         public ActionResult Details(int id)
         {
+            // if not admin, redirect to home
+            if (!isAdmin())
+            {
+                return RedirectToAction("Index", "Home");
+            }
             // get group by id
             var group = _context.Groups.FirstOrDefault(g => g.Id == id);
             return View(group);
@@ -32,6 +51,11 @@ namespace GestionStages.Controllers
         // GET: GroupsController/Create
         public ActionResult Create()
         {
+            // if not admin, redirect to home
+            if (!isAdmin())
+            {
+                return RedirectToAction("Index", "Home");
+            }
             Group group = new Group();
             return View(group);
         }
@@ -59,6 +83,11 @@ namespace GestionStages.Controllers
         // GET: GroupsController/Edit/5
         public ActionResult Edit(int id)
         {
+            // if not admin, redirect to home
+            if (!isAdmin())
+            {
+                return RedirectToAction("Index", "Home");
+            }
             // get group by id
             var group = _context.Groups.FirstOrDefault(g => g.Id == id);
             return View(group);
@@ -86,6 +115,11 @@ namespace GestionStages.Controllers
         // GET: GroupsController/Delete/5
         public ActionResult Delete(int id)
         {
+            // if not admin, redirect to home
+            if (!isAdmin())
+            {
+                return RedirectToAction("Index", "Home");
+            }
             // get group by id
             var group = _context.Groups.FirstOrDefault(g => g.Id == id);
             return View(group);

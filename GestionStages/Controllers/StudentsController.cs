@@ -13,6 +13,7 @@ namespace GestionStages.Controllers
         {
             _context = context;
         }
+
         // GET: StudentsController
         public ActionResult Index()
         {
