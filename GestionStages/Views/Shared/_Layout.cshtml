@@ -51,7 +51,7 @@
                         @if (@HttpContextAccessor.HttpContext.Session.GetString("Role") == "Student")
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Students" asp-action="Details" asp-route-id="@@HttpContextAccessor.HttpContext.Session.GetString("Id")">Me</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Students" asp-action="Details" asp-route-id=@HttpContextAccessor.HttpContext.Session.GetString("Id")>Me</a>
                             </li>
                             
                         }
