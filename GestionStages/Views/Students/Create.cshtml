@@ -1,0 +1,61 @@
+﻿@model GestionStages.Models.Student
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Student</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CV" class="control-label"></label>
+                <input asp-for="CV" class="form-control" type="file" />
+                <span asp-validation-for="CV" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GroupId" class="control-label"></label>
+                <select asp-for="GroupId" class="form-control" asp-items="@(new SelectList(ViewBag.Groups, "Id", "Name"))"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{// Make sure its a pdf file
+        
+        <script>
+			document.querySelector('input[type="file"]').addEventListener('change', function () {
+				var file = this.files[0];
+				if (file.type !== 'application/pdf') {
+					alert('Please upload a PDF file');
+					this.value = '';
+				}
+			});
+		</script>
+    
+    
+    }
+}
