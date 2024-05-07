@@ -150,6 +150,18 @@ namespace GestionStages.Controllers
             {
                 // get student by id
                 var student = _context.Students.FirstOrDefault(s => s.Id == id);
+
+                // check if the student has a CV
+                if (student.CV != null)
+                {
+                    // delete the CV
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Files", student.CV);
+                    if (System.IO.File.Exists(path))
+                    {
+                        System.IO.File.Delete(path);
+                    }
+                }
+
                 // remove student
                 _context.Students.Remove(student);
                 _context.SaveChanges();
