@@ -15,7 +15,7 @@ namespace GestionStages.Controllers
 
         public IActionResult Index()
         {
-            HttpContext.Session.SetString("Role", "Student");
+            HttpContext.Session.SetString("Role", "Company");
             HttpContext.Session.SetString("Id", "1");
             return View();
         }
